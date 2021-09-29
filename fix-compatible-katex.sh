@@ -9,7 +9,7 @@ function replace_commands {
   fi
 
   echo "backup $fix_file in case of corruption"
-  find . -name "$(echo $fix_file)" -exec cp "{}" "{}.bak" \; && \
+  find . -name "$(echo $fix_file)" -exec cp "-n" "{}" "{}.bak" \;
 
   echo "Finding $find_string" && echo
 
