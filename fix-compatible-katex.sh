@@ -1,8 +1,16 @@
 #!/bin/bash
 fix_file=${1:-fubar.ipynb}
-find_string='\\newcommand{\\'
 
 function replace_commands {
+  find_string='\\newcommand{\\'
+  if [[ $fix_file == "fubar.ipynb" ]]; then
+    echo "Usage: bash fix-compatible-katex.sh <file-name>"
+    return 0
+  fi
+
+  echo "backup $fix_file in case of corruption"
+  find . -name "$(echo $fix_file)" -exec cp "{}" "{}.bak" \; && \
+
   echo "Finding $find_string" && echo
 
   # find the new command lines in the notebook
@@ -35,13 +43,7 @@ function replace_commands {
       sed -i "s/$underset/&$add/g" $fix_file
     fi
 
-    # sed -i "s/\\$new_cmd/\\$original_cmd/g" fix_file
   done
 }
 
-# repl (str, rpl) {
-#   sed -i `s/$str/$rpl/g` $1
-# }
-echo "backup $fix_file in case of corruption"
-find . -name "$(echo $fix_file)" -exec cp "{}" "{}.bak" \; && \
 replace_commands
